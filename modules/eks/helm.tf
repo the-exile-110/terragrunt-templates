@@ -44,10 +44,10 @@ resource "helm_release" "load_balancer_controller" {
   }
 }
 
-resource "helm_release" "metric-server" {
+resource "helm_release" "metric_server" {
   name       = "metric-server"
-  repository = "https://charts.bitnami.com/bitnami"
   chart      = "metrics-server"
+  repository = "https://charts.bitnami.com/bitnami"
   namespace  = "kube-system"
   set {
     name  = "apiService.create"
