@@ -1,0 +1,67 @@
+aws:
+  account_id: 838214885020
+  region: ap-northeast-1
+  profile: default
+  env: stg
+  prefix_env: example-stg
+
+vpc:
+  cidr_block: 10.0.0.0/16
+  azs: [ ap-northeast-1a, ap-northeast-1c, ap-northeast-1d ]
+  private_subnets: [ 10.0.1.0/24, 10.0.2.0/24, 10.0.3.0/24 ]
+  public_subnets: [ 10.0.4.0/24, 10.0.5.0/24, 10.0.6.0/24 ]
+  enable_nat_gateway: false
+  single_nat_gateway: false
+  enable_dns_hostnames: true
+  enable_flow_log: true
+  create_flow_log_cloudwatch_iam_role: true
+  create_flow_log_cloudwatch_log_group: true
+  private_subnet_tags:
+    Type: private
+  public_subnet_tags:
+    Type: public
+
+ecr:
+  test_repo:
+    force_delete: false
+    image_tag_mutability: IMMUTABLE
+    scan_on_push: true
+    encryption_type: KMS
+    kms_key: ""
+
+eks:
+  # cluster
+  cluster_name: example-stg-eks
+  cluster_version: 1.24
+  cluster_endpoint_private_access: true
+  cluster_endpoint_public_access: true
+  k8s_provider_api_version: client.authentication.k8s.io/v1
+  # kms.tf
+  create_kms_key: true
+  kms_key_deletion_window_in_days: 7
+  enable_kms_key_rotation: true
+  # managed node group default
+  ami_type: AL2_x86_64
+  attach_cluster_primary_security_group: true
+  create_security_group: false
+  # managed node group
+  capacity_type: SPOT
+  instance_types: [ t3.micro ]
+  min_size: 1
+  max_size: 1
+  desired_size: 1
+  pre_bootstrap_user_data: |
+    #!/bin/bash
+    echo pre_bootstrap_user_data
+  # aws-auth
+  aws_auth_accounts: [ ]
+  aws_auth_users:
+    - userarn: arn:aws:iam::838214885020:user/quiz-app
+      username: quiz-app
+      groups:
+        - system:masters
+  aws_auth_roles:
+    - rolearn: arn:aws:iam::838214885020:role/quiz-app
+      username: quiz-app
+      groups:
+        - system:masters

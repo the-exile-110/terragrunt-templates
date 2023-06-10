@@ -1,0 +1,18 @@
+terraform:
+  required_version: 1.4.6
+  providers:
+    aws:
+      source: hashicorp/aws
+      version: 5.2.0
+  default_tags:
+    Owner: example
+    Terraform: true
+    ManagedBy: Terraform
+    ManagedByTool: Terragrunt
+    ManagedByToolVersion: v0.45.16
+
+remote_state_config:
+  account_id: 838214885020
+  region: ap-northeast-1
+  profile: default
+  bucket: terragrunt-example-remote-state
