@@ -20,6 +20,7 @@ variable "vpc_configs" {
     azs                                  = list(string)
     private_subnets                      = list(string)
     public_subnets                       = list(string)
+    map_public_ip_on_launch              = bool
     enable_nat_gateway                   = bool
     single_nat_gateway                   = bool
     enable_dns_hostnames                 = bool

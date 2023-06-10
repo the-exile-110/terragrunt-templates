@@ -5,9 +5,10 @@ module "vpc" {
   name = "${var.prefix_env}-vpc"
   cidr = var.vpc_configs.cidr_block
 
-  azs             = var.vpc_configs.azs
-  private_subnets = var.vpc_configs.private_subnets
-  public_subnets  = var.vpc_configs.public_subnets
+  azs                     = var.vpc_configs.azs
+  private_subnets         = var.vpc_configs.private_subnets
+  public_subnets          = var.vpc_configs.public_subnets
+  map_public_ip_on_launch = var.vpc_configs.map_public_ip_on_launch
 
   enable_nat_gateway   = var.vpc_configs.enable_nat_gateway
   single_nat_gateway   = var.vpc_configs.single_nat_gateway
