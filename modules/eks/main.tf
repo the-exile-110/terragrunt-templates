@@ -54,7 +54,7 @@ module "eks_auth" {
 }
 
 resource "null_resource" "update_k8s_config" {
-  depends_on = [module.eks, module.eks_auth]
+  depends_on = [module.eks_auth]
 
   provisioner "local-exec" {
     command = "aws eks update-kubeconfig --name ${module.eks.cluster_name} --region ${var.aws_region} --profile ${var.aws_profile}"
