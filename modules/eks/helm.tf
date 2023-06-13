@@ -56,6 +56,7 @@ resource "helm_release" "metric_server" {
 
 // kubectl get pods -n argocd
 // kubectl port-forward svc/argocd-server -n argocd 8080:443
+// kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d && echo
 resource "helm_release" "argocd" {
   depends_on = [helm_release.load_balancer_controller]
 
