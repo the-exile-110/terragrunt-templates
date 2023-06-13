@@ -6,6 +6,7 @@ module "eks" {
   cluster_version                 = var.eks_configs.cluster_version
   cluster_endpoint_private_access = var.eks_configs.cluster_endpoint_private_access
   cluster_endpoint_public_access  = var.eks_configs.cluster_endpoint_public_access
+  create_kms_key                  = var.eks_configs.create_kms_key
 
   vpc_id                   = var.vpc_configs.vpc_id
   subnet_ids               = var.vpc_configs.subnet_ids
@@ -14,6 +15,16 @@ module "eks" {
   eks_managed_node_group_defaults = var.eks_configs.eks_managed_node_group_defaults
   eks_managed_node_groups         = {
     default = var.eks_configs.eks_managed_node_groups.default
+  }
+  node_security_group_additional_rules = {
+    aws_lb_controller_webhook = {
+      description                   = "Cluster API to AWS LB Controller webhook"
+      protocol                      = "all"
+      from_port                     = 9443
+      to_port                       = 9443
+      type                          = "ingress"
+      source_cluster_security_group = true
+    }
   }
 }
 

@@ -17,6 +17,10 @@ output "cluster_security_group_id" {
   value       = module.eks.cluster_security_group_id
 }
 
+output "cluster_iam_role_arn" {
+  value = module.eks.cluster_iam_role_arn
+}
+
 output "load_balancer_controller_policy_arn" {
   value = aws_iam_policy.load_balancer_controller.arn
 }

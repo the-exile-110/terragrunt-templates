@@ -53,3 +53,25 @@ resource "helm_release" "metric_server" {
     value = "true"
   }
 }
+
+// kubectl get pods -n argocd
+// kubectl port-forward svc/argocd-server -n argocd 8080:443
+resource "helm_release" "argocd" {
+  depends_on = [helm_release.load_balancer_controller]
+
+  name             = "argocd"
+  chart            = "argo-cd"
+  namespace        = "argocd"
+  create_namespace = true
+  version          = "5.36.1"
+  repository       = "https://argoproj.github.io/argo-helm"
+  set {
+    name  = "server.service.type"
+    value = "NodePort"
+  }
+  set {
+    name  = "server.extraArgs"
+    value = "{--insecure,--request-timeout=\"5m\"}"
+  }
+
+}
