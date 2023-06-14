@@ -29,8 +29,3 @@ output "load_balancer_controller_role_arn" {
   description = "AWS Load Balancer Controller IAM Role ARN"
   value       = aws_iam_role.load_balancer_controller.arn
 }
-
-output "helm_load_balancer_controller_metadata" {
-  description = "Metadata Block outlining status of the deployed release."
-  value       = helm_release.load_balancer_controller.metadata
-}

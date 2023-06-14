@@ -46,6 +46,7 @@ eks:
       update_launch_template_default_version: true
       iam_role_additional_policies:
         AmazonSSMManagedInstanceCore: arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+        AmazonEBSCSIDriverPolicy: arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy
 
     # self managed node groups
     eks_managed_node_groups:

@@ -1,3 +1,11 @@
+// argocd
+// kubectl get pods -n argocd
+// kubectl port-forward svc/argo-cd-argocd-server -n argocd 8080:443
+// kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d && echo
+
+// prometheus
+// kubectl get pods -n kube-prometheus-stack
+// kubectl port-forward svc/prometheus-server -n kube-prometheus-stack 9090:9090
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "19.15.3"
@@ -28,28 +36,43 @@ module "eks" {
   }
 }
 
-resource "aws_eks_addon" "kube_proxy" {
+module "eks_blueprints_addons" {
   depends_on = [module.eks]
 
-  cluster_name                = module.eks.cluster_name
-  addon_name                  = "kube-proxy"
-  resolve_conflicts_on_update = "PRESERVE"
-}
+  source  = "aws-ia/eks-blueprints-addons/aws"
+  version = "1.0.0"
 
-resource "aws_eks_addon" "vpc_cni" {
-  depends_on = [module.eks]
+  cluster_name      = module.eks.cluster_name
+  cluster_endpoint  = module.eks.cluster_endpoint
+  cluster_version   = module.eks.cluster_version
+  oidc_provider_arn = module.eks.oidc_provider_arn
 
-  cluster_name                = module.eks.cluster_name
-  addon_name                  = "vpc-cni"
-  resolve_conflicts_on_update = "PRESERVE"
-}
+  eks_addons = {
+    aws-ebs-csi-driver = {
+      most_recent = true
+    }
+    coredns = {
+      most_recent = true
+    }
+    vpc-cni = {
+      most_recent = true
+    }
+    kube-proxy = {
+      most_recent = true
+    }
+  }
 
-resource "aws_eks_addon" "coredns" {
-  depends_on = [module.eks]
-
-  cluster_name                = module.eks.cluster_name
-  addon_name                  = "coredns"
-  resolve_conflicts_on_update = "PRESERVE"
+  enable_aws_cloudwatch_metrics       = true
+  enable_aws_for_fluentbit            = true
+  enable_aws_load_balancer_controller = true
+  enable_karpenter                    = true
+  enable_kube_prometheus_stack        = true
+  enable_metrics_server               = true
+  enable_argocd                       = true
+  enable_argo_rollouts                = true
+  enable_argo_workflows               = true
+  enable_external_dns                 = true
+  enable_cert_manager                 = true
 }
 
 module "eks_auth" {
