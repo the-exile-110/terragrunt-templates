@@ -23,12 +23,27 @@ vpc:
     Type: public
 
 ecr:
-  test_repo:
-    force_delete: false
-    image_tag_mutability: IMMUTABLE
-    scan_on_push: true
-    encryption_type: KMS
-    kms_key: ""
+  - repository_name: example-repo
+    repository_read_write_access_arns:
+      - arn:aws:iam::838214885020:role/example-role
+    repository_lifecycle_policy: >
+      {
+        "rules": [
+          {
+            "rulePriority": 1,
+            "description": "Expire images older than 14 days",
+            "selection": {
+              "tagStatus": "tagged",
+              "tagPrefixList": ["stg"],
+              "countType": "imageCountMoreThan",
+              "countNumber": 14
+            },
+            "action": {
+              "type": "expire"
+            }
+          }
+        ]
+      }
 
 eks:
   eks_on_ec2:
@@ -45,6 +60,7 @@ eks:
       instance_type: t3.small
       update_launch_template_default_version: true
       iam_role_additional_policies:
+        # Key, Value
         AmazonSSMManagedInstanceCore: arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
         AmazonEBSCSIDriverPolicy: arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy
 

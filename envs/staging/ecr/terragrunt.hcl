@@ -19,11 +19,5 @@ inputs = {
   aws_region     = local.env_vars.aws.region
   env            = local.env_vars.aws.env
   prefix_env     = local.env_vars.aws.prefix_env
-
-  # test repo
-  force_delete         = local.env_vars.ecr.test_repo.force_delete
-  image_tag_mutability = local.env_vars.ecr.test_repo.image_tag_mutability
-  scan_on_push         = local.env_vars.ecr.test_repo.scan_on_push
-  encryption_type      = local.env_vars.ecr.test_repo.encryption_type
-  kms_key              = local.env_vars.ecr.test_repo.kms_key
+  ecr            = local.env_vars.ecr
 }

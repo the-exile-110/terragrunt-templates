@@ -1,14 +1,9 @@
-resource "aws_ecr_repository" "test" {
-  name                 = "${var.prefix_env}-test"
-  force_delete         = var.force_delete
-  image_tag_mutability = var.image_tag_mutability
+module "ecr" {
+  source = "terraform-aws-modules/ecr/aws"
 
-  image_scanning_configuration {
-    scan_on_push = var.scan_on_push
-  }
+  for_each = {for idx, repo in var.ecr : idx => repo}
 
-  encryption_configuration {
-    encryption_type = var.encryption_type
-    kms_key         = var.kms_key
-  }
+  repository_name                   = each.value.repository_name
+  repository_read_write_access_arns = each.value.repository_read_write_access_arns != null ? each.value.repository_read_write_access_arns : []
+  repository_lifecycle_policy       = each.value.repository_lifecycle_policy
 }
