@@ -1,5 +1,6 @@
 module "ecr" {
-  source = "terraform-aws-modules/ecr/aws"
+  source  = "terraform-aws-modules/ecr/aws"
+  version = "1.6.0"
 
   for_each = {for idx, repo in var.ecr : idx => repo}
 
