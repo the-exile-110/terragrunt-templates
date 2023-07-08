@@ -19,5 +19,5 @@ inputs = {
   aws_region     = local.env_vars.aws.region
   env            = local.env_vars.aws.env
   prefix_env     = local.env_vars.aws.prefix_env
-  ecr            = local.env_vars.ecr
+  exam_repo      = local.env_vars.ecr.exam_repo
 }

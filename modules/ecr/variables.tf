@@ -14,10 +14,10 @@ variable "aws_account_id" {
   type = string
 }
 
-variable "ecr" {
-  type = list(object({
+variable "exam_repo" {
+  type = object({
     repository_name                   = string
     repository_read_write_access_arns = list(string)
     repository_lifecycle_policy       = string
-  }))
+  })
 }

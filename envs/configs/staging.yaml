@@ -23,7 +23,8 @@ vpc:
     Type: public
 
 ecr:
-  - repository_name: example-repo
+  exam_repo:
+    repository_name: example-repo2
     repository_read_write_access_arns:
       - arn:aws:iam::838214885020:role/example-role
     repository_lifecycle_policy: >

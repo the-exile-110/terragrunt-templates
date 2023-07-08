@@ -1,10 +1,8 @@
-module "ecr" {
+module "exam_repo" {
   source  = "terraform-aws-modules/ecr/aws"
   version = "1.6.0"
 
-  for_each = {for idx, repo in var.ecr : idx => repo}
-
-  repository_name                   = each.value.repository_name
-  repository_read_write_access_arns = each.value.repository_read_write_access_arns != null ? each.value.repository_read_write_access_arns : []
-  repository_lifecycle_policy       = each.value.repository_lifecycle_policy
+  repository_name                   = var.exam_repo.repository_name
+  repository_read_write_access_arns = var.exam_repo.repository_read_write_access_arns
+  repository_lifecycle_policy       = var.exam_repo.repository_lifecycle_policy
 }
